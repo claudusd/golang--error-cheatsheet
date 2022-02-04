@@ -75,4 +75,22 @@ func main() {
 	if errors.Is(err, SQLError8) {
 		fmt.Printf("SQL Error 8: %v\n", err)
 	}
+
+	megaWrap := fmt.Errorf(
+		"err 1 %w",
+		fmt.Errorf(
+			"err 2 %w",
+			fmt.Errorf(
+				"err 3 %w",
+				err,
+			),
+		),
+	)
+	if errors.As(megaWrap, &DBError{}) {
+		fmt.Printf("Wrap good: %v\n", err)
+	}
+	if errors.Is(megaWrap, SQLError8) {
+		fmt.Printf("SQL Error 8: %v\n", err)
+	}
+
 }
